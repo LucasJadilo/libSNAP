@@ -118,7 +118,7 @@ uint32_t snap_calculateUserHash(const uint8_t *data, const uint16_t size)
 
 	for(uint_fast16_t i = 0; i < size; i++)
 	{
-		crc ^= data[i] << 16;
+		crc ^= (uint32_t)data[i] << 16;
 		for(uint_fast8_t j = 0; j < 8; j++)
 		{
 			crc = (crc & 0x800000) ? (crc << 1) ^ 0x864CFB : crc << 1;

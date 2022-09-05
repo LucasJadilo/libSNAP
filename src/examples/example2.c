@@ -81,7 +81,7 @@ int main(void)
 	{
 		ret = snap_decode(&frame, inputBytes[i]);
 
-		printf("inputBytes[%u] = %02X, ", i, inputBytes[i]);
+		printf("inputBytes[%u] = %02X, ", (unsigned)i, inputBytes[i]);
 		printFrame(&frame);
 	}
 
@@ -173,7 +173,7 @@ int main(void)
 	{
 		printf("\tPayload = ");
 
-		for(uint_fast16_t i = 0; i < ret; i++)
+		for(uint_fast16_t i = 0; i < (uint_fast16_t)ret; i++)
 		{
 			printf("%02X ", data[i]);
 		}

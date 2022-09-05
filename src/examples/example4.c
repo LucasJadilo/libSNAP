@@ -77,7 +77,7 @@ int main(void)
 	printf("\tsnap_getData() = %d, data = { ", fieldSize);
 	if(fieldSize > 0)
 	{
-		for(uint_fast16_t i = 0; i < fieldSize; i++)
+		for(uint_fast16_t i = 0; i < (uint_fast16_t)fieldSize; i++)
 		{
 			printf("%02X ", data[i]);
 		}

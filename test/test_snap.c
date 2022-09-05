@@ -47,7 +47,7 @@ uint32_t snap_calculateUserHash(const uint8_t *data, const uint16_t size)
 
 	for(uint_fast16_t i = 0; i < size; i++)
 	{
-		crc ^= data[i] << 16;
+		crc ^= (uint32_t)data[i] << 16;
 		for(uint_fast8_t j = 0; j < 8; j++)
 		{
 			crc = (crc & 0x800000) ? (crc << 1) ^ 0x864CFB : crc << 1;
@@ -129,7 +129,7 @@ static void test_decode_StatusIncomplete(const uint8_t *frameBytes,
 	{
 		expectedFrame.buffer[expectedFrame.size++] = frameBytes[i];
 
-		if(i == frameSize - 1)
+		if(i == frameSize - 1U)
 		{
 			expectedFrame.status = finalStatus;
 		}
@@ -299,8 +299,8 @@ TEST(miscFunctions, removePaddingBytes)
 
 TEST(miscFunctions, getNdbFromDataSize)
 {
-	const uint_fast16_t dataSize[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 16, 17, 25, 32, 33, 50, 64, 65, 90, 128, 129, 200, 256, 257, 350, 512, 513, 1000, UINT16_MAX};
-	const uint_fast8_t ndb[]       = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9,  9,  9, 10, 10, 10, 11, 11, 11, 12, 12,  12,  13,  13,  13,  14,  14,  14,   0,    0,          0};
+	const uint16_t dataSize[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 16, 17, 25, 32, 33, 50, 64, 65, 90, 128, 129, 200, 256, 257, 350, 512, 513, 1000, UINT16_MAX};
+	const uint8_t ndb[]       = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9,  9,  9, 10, 10, 10, 11, 11, 11, 12, 12,  12,  13,  13,  13,  14,  14,  14,   0,    0,          0};
 
 	for(uint_fast8_t i = 0; i < SIZEOF(dataSize); i++)
 	{
@@ -310,8 +310,8 @@ TEST(miscFunctions, getNdbFromDataSize)
 
 TEST(miscFunctions, getDataSizeFromNdb)
 {
-	const uint_fast8_t ndb[]       = {0, 1, 2, 3, 4, 5, 6, 7, 8,  9, 10, 11,  12,  13,  14, 15, 16, 100, UINT8_MAX};
-	const uint_fast16_t dataSize[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 16, 32, 64, 128, 256, 512,  0,  0,   0,         0};
+	const uint8_t ndb[]       = {0, 1, 2, 3, 4, 5, 6, 7, 8,  9, 10, 11,  12,  13,  14, 15, 16, 100, UINT8_MAX};
+	const uint16_t dataSize[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 16, 32, 64, 128, 256, 512,  0,  0,   0,         0};
 
 	for(uint_fast8_t i = 0; i < SIZEOF(ndb); i++)
 	{
@@ -321,8 +321,8 @@ TEST(miscFunctions, getDataSizeFromNdb)
 
 TEST(miscFunctions, getHashSizeFromEdm)
 {
-	const uint_fast8_t edm[]      = {0, 1, 2, 3, 4, 5, 6,                   7};
-	const uint_fast8_t hashSize[] = {0, 0, 1, 1, 2, 4, 0, SNAP_SIZE_USER_HASH};
+	const uint8_t edm[]      = {0, 1, 2, 3, 4, 5, 6,                   7};
+	const uint8_t hashSize[] = {0, 0, 1, 1, 2, 4, 0, SNAP_SIZE_USER_HASH};
 
 	for(uint_fast8_t i = 0; i < SIZEOF(edm); i++)
 	{
