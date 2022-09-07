@@ -36,7 +36,7 @@ sophisticated nodes can communicate with each other in the network.
 The homepage of the protocol is http://www.hth.com/snap/. Unfortunately, the
 website has been down for a long time. Hence, there is no official source online
 for the protocol. Fortunately, you can find a copy of the last revision of the
-protocol specification in this repository (folder `doc/`).
+protocol specification in this repository: [`doc/snap_v1.00_rev1.04.pdf`](https://github.com/LucasJadilo/libSNAP/blob/main/doc/snap_v1.00_rev1.04.pdf).
 
 ## Library features
 
