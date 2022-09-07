@@ -113,7 +113,7 @@ else ifeq ($(SHELL_SYNTAX),Bash)
     RMDIR     = rm -rf $(1)
     RUN       = $(1)
     OPENDOC  := firefox ${PWD}/$(HTML_DIR)/index.html
-    CLEANDOC := rm -rf $(DOC_DIR)/*.chm ; rm -rf $(HTML_DIR)
+    CLEANDOC := rm -rf $(HTML_DIR) $(DOC_DIR)/*.chm
 else
     $(error Error: Shell syntax not supported)
 endif
