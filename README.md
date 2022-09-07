@@ -121,4 +121,4 @@ runs the code example 1);
 - `make doc`: Builds the whole HTML documentation of the library (requires
   **Doxygen** and **Graphviz** installed);
 - `make open-doc`: Opens the HTML documentation on the browser;
-- `make clean-doc`: Delete the HTML documentation.
+- `make clean-doc`: Deletes the HTML documentation.
