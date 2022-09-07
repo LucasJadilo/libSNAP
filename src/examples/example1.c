@@ -37,7 +37,7 @@ int main(void)
 
 	snap_frame_t frame;
 
-	int16_t ret = snap_init(&frame, data, sizeof(data));	// Using the same array for frame buffer and data to save memory (it must be large enough to store the complete frame)
+	int ret = snap_init(&frame, data, sizeof(data));	// Using the same array for frame buffer and data to save memory (it must be large enough to store the complete frame)
 
 	printf("\nsnap_init() = %d\n", ret);
 
@@ -100,7 +100,7 @@ int main(void)
 	printf("Frame struct:\n\tstatus = %d (%s)\n\tmaxSize = %u\n\tsize = %u\n\tbuffer = ",
 		frame.status, statusToString(frame.status), frame.maxSize, frame.size);
 
-	for(uint_fast16_t i = 0; i < frame.size; i++)
+	for(int i = 0; i < frame.size; i++)
 	{
 		printf("%02X ", frame.buffer[i]);
 	}

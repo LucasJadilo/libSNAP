@@ -37,7 +37,7 @@ int main(void)
 	uint8_t buffer[50];
 	snap_frame_t frame;
 
-	int16_t ret = snap_init(&frame, buffer, sizeof(buffer));
+	int ret = snap_init(&frame, buffer, sizeof(buffer));
 
 	printf("\nsnap_init() = %d\n", ret);
 
@@ -77,11 +77,11 @@ int main(void)
 		0xE6, 0xEB,													// 16-bit CRC
 		0xFF, 0xEE };												// Postamble (ignored)
 
-	for(uint_fast16_t i = 0; i < sizeof(inputBytes); i++)
+	for(int i = 0; i < (int)sizeof(inputBytes); i++)
 	{
 		ret = snap_decode(&frame, inputBytes[i]);
 
-		printf("inputBytes[%u] = %02X, ", (unsigned)i, inputBytes[i]);
+		printf("inputBytes[%u] = %02X, ", i, inputBytes[i]);
 		printFrame(&frame);
 	}
 
@@ -173,16 +173,16 @@ int main(void)
 	{
 		printf("\tPayload = ");
 
-		for(uint_fast16_t i = 0; i < (uint_fast16_t)ret; i++)
+		for(int i = 0; i < ret; i++)
 		{
 			printf("%02X ", data[i]);
 		}
 
-		const uint16_t dataSize = snap_removePaddingBytes(data, (uint16_t)ret, true);
+		const int dataSize = snap_removePaddingBytes(data, (uint16_t)ret, true);
 
 		printf("\n\tActual Data = ");
 
-		for(uint_fast16_t i = 0; i < dataSize; i++)
+		for(int i = 0; i < dataSize; i++)
 		{
 			printf("%02X ", data[i]);
 		}
@@ -234,9 +234,9 @@ const char *statusToString(const snap_status_t status)
  */
 void printFrame(const snap_frame_t *frame)
 {
-	printf("status = %d (%s), buffer[%u/%u] = ", frame->status, statusToString(frame->status) , frame->size, frame->maxSize);
+	printf("status = %d (%s), buffer[%u/%u] = ", frame->status, statusToString(frame->status), frame->size, frame->maxSize);
 
-	for(uint_fast16_t i = 0; i < frame->size; i++)
+	for(int i = 0; i < frame->size; i++)
 	{
 		printf("%02X ", frame->buffer[i]);
 	}

@@ -36,7 +36,7 @@ int main(void)
 	uint8_t buffer[SNAP_MAX_SIZE_FRAME];
 	snap_frame_t frame;
 
-	int16_t ret = snap_init(&frame, buffer, sizeof(buffer));
+	int ret = snap_init(&frame, buffer, sizeof(buffer));
 
 	printf("\nsnap_init() = %d\n", ret);
 
@@ -91,7 +91,7 @@ int main(void)
 	printf("Frame struct:\n\tstatus = %d (%s)\n\tmaxSize = %u\n\tsize = %u\n\tbuffer = ",
 		frame.status, statusToString(frame.status), frame.maxSize, frame.size);
 
-	for(uint_fast16_t i = 0; i < frame.size; i++)
+	for(int i = 0; i < frame.size; i++)
 	{
 		printf("%02X ", frame.buffer[i]);
 	}
@@ -116,10 +116,10 @@ uint32_t snap_calculateUserHash(const uint8_t *data, const uint16_t size)
 {
 	uint32_t crc = 0xB704CE;
 
-	for(uint_fast16_t i = 0; i < size; i++)
+	for(int i = 0; i < size; i++)
 	{
 		crc ^= (uint32_t)data[i] << 16;
-		for(uint_fast8_t j = 0; j < 8; j++)
+		for(int j = 0; j < 8; j++)
 		{
 			crc = (crc & 0x800000) ? (crc << 1) ^ 0x864CFB : crc << 1;
 			crc &= 0xFFFFFF;

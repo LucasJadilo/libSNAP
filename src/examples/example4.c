@@ -54,7 +54,7 @@ int main(void)
 	printf("\tsnap_getEdm() = %u\n", snap_getEdm(&frame));
 	printf("\tsnap_getNdb() = %u\n", snap_getNdb(&frame));
 
-	int16_t fieldSize = 0;
+	int fieldSize = 0;
 	snap_header_t header = {0};
 	fieldSize = snap_getHeader(&frame, &header);
 	printf("\tsnap_getHeader() = %d, header = { dab = %u, sab = %u, pfb = %u, ack = %u, cmd = %u, edm = %u, ndb = %u }\n",
@@ -77,7 +77,7 @@ int main(void)
 	printf("\tsnap_getData() = %d, data = { ", fieldSize);
 	if(fieldSize > 0)
 	{
-		for(uint_fast16_t i = 0; i < (uint_fast16_t)fieldSize; i++)
+		for(int i = 0; i < fieldSize; i++)
 		{
 			printf("%02X ", data[i]);
 		}
