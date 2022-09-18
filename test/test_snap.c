@@ -61,7 +61,7 @@ uint32_t snap_calculateUserHash(const uint8_t *data, const uint16_t size)
 void printFrame(const snap_frame_t *frame)
 {
 	printf("status=%d, buffer[%u/%u]=", frame->status, frame->size, frame->maxSize);
-	
+
 	if(frame->buffer == NULL)
 	{
 		printf("NULL");
@@ -73,13 +73,13 @@ void printFrame(const snap_frame_t *frame)
 			printf("%02X ", frame->buffer[i]);
 		}
 	}
-	
+
 	printf("\n");
 }
 
 static void assertFrame(const snap_frame_t *expectedFrame,
-                        const snap_frame_t *actualFrame,
-                        const unsigned int lineNumber)
+						const snap_frame_t *actualFrame,
+						const unsigned int lineNumber)
 {
 	UNITY_TEST_ASSERT_EQUAL_INT8  (expectedFrame->status,  actualFrame->status,  lineNumber, "(frame.status)");
 	UNITY_TEST_ASSERT_EQUAL_UINT16(expectedFrame->maxSize, actualFrame->maxSize, lineNumber, "(frame.maxSize)");
@@ -92,8 +92,8 @@ static void assertFrame(const snap_frame_t *expectedFrame,
 }
 
 static void assertHeader(const snap_header_t *expectedHeader,
-                         const snap_header_t *actualHeader,
-                         const unsigned int lineNumber)
+						 const snap_header_t *actualHeader,
+						 const unsigned int lineNumber)
 {
 	UNITY_TEST_ASSERT_EQUAL_UINT(expectedHeader->dab, actualHeader->dab, lineNumber, "(header.dab)");
 	UNITY_TEST_ASSERT_EQUAL_UINT(expectedHeader->sab, actualHeader->sab, lineNumber, "(header.sab)");
@@ -105,7 +105,7 @@ static void assertHeader(const snap_header_t *expectedHeader,
 }
 
 static void test_encapsulate(snap_fields_t *fields,
-                             const snap_frame_t *expectedFrame)
+							 const snap_frame_t *expectedFrame)
 {
 	uint8_t actualBuffer[SNAP_MAX_SIZE_FRAME] = {0};
 	snap_frame_t actualFrame = {.buffer = actualBuffer, .maxSize = expectedFrame->maxSize, .status = SNAP_STATUS_IDLE, .size = 0};
@@ -115,9 +115,9 @@ static void test_encapsulate(snap_fields_t *fields,
 }
 
 static void test_decode_StatusIncomplete(const uint8_t *frameBytes,
-                                         const uint16_t frameSize,
-                                         const int8_t finalStatus,
-                                         const uint16_t maxSize)
+										 const uint16_t frameSize,
+										 const int8_t finalStatus,
+										 const uint16_t maxSize)
 {
 	uint8_t actualBuffer[SNAP_MAX_SIZE_FRAME] = {0};
 	snap_frame_t actualFrame = {.buffer = actualBuffer, .maxSize = maxSize, .status = SNAP_STATUS_IDLE, .size = 0};
@@ -140,7 +140,7 @@ static void test_decode_StatusIncomplete(const uint8_t *frameBytes,
 }
 
 static void test_decodeFrame_StatusIdle(const uint8_t *preambleBytes,
-                                        const uint8_t preambleSize)
+										const uint8_t preambleSize)
 {
 	uint8_t actualBuffer[10] = {0};
 	snap_frame_t actualFrame = {.buffer = actualBuffer, .maxSize = sizeof(actualBuffer), .status = SNAP_STATUS_IDLE, .size = 0};
@@ -166,11 +166,11 @@ static void test_decodeFrame_StatusIdle(const uint8_t *preambleBytes,
 }
 
 static void test_decode_StatusValidOrError(uint8_t *frameBytes,
-                                           const uint16_t frameSize,
-                                           const uint8_t *postambleBytes,
-                                           const uint16_t postambleSize,
-                                           const int8_t finalStatus,
-                                           const uint16_t maxSize)
+										   const uint16_t frameSize,
+										   const uint8_t *postambleBytes,
+										   const uint16_t postambleSize,
+										   const int8_t finalStatus,
+										   const uint16_t maxSize)
 {
 	uint8_t actualBuffer[SNAP_MAX_SIZE_FRAME] = {0};
 	snap_frame_t actualFrame = {.buffer = actualBuffer, .maxSize = maxSize, .status = SNAP_STATUS_IDLE, .size = 0};
@@ -844,7 +844,7 @@ TEST(encapsulate, should_BuildFrame_and_ChangeStatusToValid_if_BufferHasEnoughSp
 									  .destAddress = 0xF1, .protocolFlags = 0xF2, .dataSize = 1, .data = (uint8_t []){0x69}, .paddingAfter = true},
 					 &(snap_frame_t){.size = 6, .status = SNAP_STATUS_VALID, .maxSize = SNAP_MAX_SIZE_FRAME,
 									 .buffer = (uint8_t []){SNAP_SYNC, 0x47, 0x11, 0xF1, 0xF2, 0x69}});
-	
+
 	test_encapsulate(&(snap_fields_t){.header = {.dab = 1, .sab = 0, .pfb = 1, .ack = 3, .cmd = 0, .edm = 1},
 									  .destAddress = 0xF1, .protocolFlags = 0xF2, .dataSize = 1, .data = (uint8_t []){0x69}, .paddingAfter = false},
 					 &(snap_frame_t){.size = 6, .status = SNAP_STATUS_VALID, .maxSize = SNAP_MAX_SIZE_FRAME,
