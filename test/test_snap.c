@@ -139,8 +139,8 @@ static void test_decode_StatusIncomplete(const uint8_t *frameBytes,
 	}
 }
 
-static void test_decodeFrame_StatusIdle(const uint8_t *preambleBytes,
-										const uint8_t preambleSize)
+static void test_decode_StatusIdle(const uint8_t *preambleBytes,
+								   const uint8_t preambleSize)
 {
 	uint8_t actualBuffer[10] = {0};
 	snap_frame_t actualFrame = {.buffer = actualBuffer, .maxSize = sizeof(actualBuffer), .status = SNAP_STATUS_IDLE, .size = 0};
@@ -544,9 +544,9 @@ TEST_GROUP_RUNNER(decode)
 
 TEST(decode, if_StatusIdle_should_StoreSyncByte_and_ChangeStatusToIncomplete_when_ReceiveSyncByte)
 {
-	test_decodeFrame_StatusIdle(NULL, 0);
-	test_decodeFrame_StatusIdle((uint8_t []){0x69}, 1);
-	test_decodeFrame_StatusIdle((uint8_t []){0x00, 0x10, 0x20, 0x30, 0x53, 0x55, 0xFF}, 7);
+	test_decode_StatusIdle(NULL, 0);
+	test_decode_StatusIdle((uint8_t []){0x69}, 1);
+	test_decode_StatusIdle((uint8_t []){0x00, 0x10, 0x20, 0x30, 0x53, 0x55, 0xFF}, 7);
 }
 
 TEST(decode, if_StatusIncomplete_should_StoreBytes_and_ChangeStatusToValid_when_ReceiveValidFrame)
