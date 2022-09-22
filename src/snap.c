@@ -42,6 +42,18 @@ SOFTWARE.
 
 
 /******************************************************************************/
+/*  Private Macros                                                            */
+/******************************************************************************/
+
+
+#ifdef SNAP_DISABLE_WEAK
+	#define SNAP_WEAK
+#else
+	#define SNAP_WEAK	__attribute__((weak))
+#endif
+
+
+/******************************************************************************/
 /*  Public Function Definitions                                               */
 /******************************************************************************/
 
@@ -493,11 +505,17 @@ uint8_t snap_calculateChecksum8(const uint8_t *data, const uint16_t size)
 	return checksum;
 }
 
+#ifndef SNAP_OVERRIDE_CRC8
+
 /**
  * @brief Calculate the 8-bit CRC of a byte array.
- * @details If the macro `SNAP_CRC8_TABLE` is defined, the function will use a
- *          256-byte lookup table to speed up the calculation. The algorithm can
- *          be described according to the Rocksoft^tm Model CRC Algorithm by Ross Williams:
+ * @details This "weak" function can be overridden by a user implementation,
+ *          especially when a hardware implementation is available. If the macro
+ *          `SNAP_CRC8_TABLE` is defined, this function will use a 256-byte lookup
+ *          table to speed up the calculation. If the macro `SNAP_DISABLE_WEAK` is defined,
+ *          this function becomes a "strong" definition, so the only way to override it
+ *          is to define the macro `SNAP_OVERRIDE_CRC8`. The algorithm can be described
+ *          according to the Rocksoft^tm Model CRC Algorithm by Ross Williams:
  *          | Name            | Width | Poly | Init | RefIn | RefOut | XorOut | Check |
  *          |:---------------:|:-----:|:----:|:----:|:-----:|:------:|:------:|:-----:|
  *          | CRC-8/MAXIM-DOW | 8     | 0x31 | 0x00 | True  | True   | 0x00   | 0xA1  |
@@ -505,7 +523,7 @@ uint8_t snap_calculateChecksum8(const uint8_t *data, const uint16_t size)
  * @param[in] size Number of bytes used in the calculation.
  * @return Result.
  */
-uint8_t snap_calculateCrc8(const uint8_t *data, const uint16_t size)
+SNAP_WEAK uint8_t snap_calculateCrc8(const uint8_t *data, const uint16_t size)
 {
 	uint8_t crc = 0;
 
@@ -558,11 +576,19 @@ uint8_t snap_calculateCrc8(const uint8_t *data, const uint16_t size)
 	return crc;
 }
 
+#endif	// SNAP_OVERRIDE_CRC8
+
+#ifndef SNAP_OVERRIDE_CRC16
+
 /**
  * @brief Calculate the 16-bit CRC of a byte array.
- * @details If the macro `SNAP_CRC16_TABLE` is defined, the function will use a
- *          512-byte lookup table to speed up the calculation. The algorithm can
- *          be described according to the Rocksoft^tm Model CRC Algorithm by Ross Williams:
+ * @details This "weak" function can be overridden by a user implementation,
+ *          especially when a hardware implementation is available. If the macro
+ *          `SNAP_CRC16_TABLE` is defined, this function will use a 512-byte lookup
+ *          table to speed up the calculation. If the macro `SNAP_DISABLE_WEAK` is defined,
+ *          this function becomes a "strong" definition, so the only way to override it
+ *          is to define the macro `SNAP_OVERRIDE_CRC16`. The algorithm can be described
+ *          according to the Rocksoft^tm Model CRC Algorithm by Ross Williams:
  *          | Name          | Width | Poly   | Init   | RefIn | RefOut | XorOut | Check  |
  *          |:-------------:|:-----:|:------:|:------:|:-----:|:------:|:------:|:------:|
  *          | CRC-16/XMODEM | 16    | 0x1021 | 0x0000 | False | False  | 0x0000 | 0x31C3 |
@@ -570,7 +596,7 @@ uint8_t snap_calculateCrc8(const uint8_t *data, const uint16_t size)
  * @param[in] size Number of bytes used in the calculation.
  * @return Result.
  */
-uint16_t snap_calculateCrc16(const uint8_t *data, const uint16_t size)
+SNAP_WEAK uint16_t snap_calculateCrc16(const uint8_t *data, const uint16_t size)
 {
 	uint16_t crc = 0;
 
@@ -630,11 +656,19 @@ uint16_t snap_calculateCrc16(const uint8_t *data, const uint16_t size)
 	return crc;
 }
 
+#endif	// SNAP_OVERRIDE_CRC16
+
+#ifndef SNAP_OVERRIDE_CRC32
+
 /**
  * @brief Calculate the 32-bit CRC of a byte array.
- * @details If the macro `SNAP_CRC32_TABLE` is defined, the function will use a
- *          1024-byte lookup table to speed up the calculation. The algorithm can
- *          be described according to the Rocksoft^tm Model CRC Algorithm by Ross Williams:
+ * @details This "weak" function can be overridden by a user implementation,
+ *          especially when a hardware implementation is available. If the macro
+ *          `SNAP_CRC32_TABLE` is defined, this function will use a 1024-byte lookup
+ *          table to speed up the calculation. If the macro `SNAP_DISABLE_WEAK` is defined,
+ *          this function becomes a "strong" definition, so the only way to override it
+ *          is to define the macro `SNAP_OVERRIDE_CRC32`. The algorithm can be described
+ *          according to the Rocksoft^tm Model CRC Algorithm by Ross Williams:
  *          | Name            | Width | Poly       | Init       | RefIn | RefOut | XorOut     | Check      |
  *          |:---------------:|:-----:|:----------:|:----------:|:-----:|:------:|:----------:|:----------:|
  *          | CRC-32/ISO-HDLC | 32    | 0x04C11DB7 | 0xFFFFFFFF | True  | True   | 0xFFFFFFFF | 0xCBF43926 |
@@ -642,7 +676,7 @@ uint16_t snap_calculateCrc16(const uint8_t *data, const uint16_t size)
  * @param[in] size Number of bytes used in the calculation.
  * @return Result.
  */
-uint32_t snap_calculateCrc32(const uint8_t *data, const uint16_t size)
+SNAP_WEAK uint32_t snap_calculateCrc32(const uint8_t *data, const uint16_t size)
 {
 	uint32_t crc = 0xFFFFFFFF;
 
@@ -716,21 +750,29 @@ uint32_t snap_calculateCrc32(const uint8_t *data, const uint16_t size)
 	return ~crc;
 }
 
+#endif	// SNAP_OVERRIDE_CRC32
+
+#ifndef SNAP_OVERRIDE_USER_HASH
+
 /**
  * @brief Calculate the hash value of a byte array using a user-defined algorithm.
  * @details This "weak" function is supposed to be overridden by a user implementation.
  *          It will be selected and called automatically by the function snap_calculateHash()
- *          when the EDM value is equal to #SNAP_HDB1_EDM_USER_SPECIFIED.
+ *          when the EDM value is equal to #SNAP_HDB1_EDM_USER_SPECIFIED. If the macro
+ *          `SNAP_DISABLE_WEAK` is defined, this function becomes a "strong" definition,
+ *          so the only way to override it is to define the macro `SNAP_OVERRIDE_USER_HASH`.
  * @param[in] data Pointer to the byte array used in the calculation.
  * @param[in] size Number of bytes used in the calculation.
  * @return Result.
  */
-__attribute__((weak)) uint32_t snap_calculateUserHash(const uint8_t *data, const uint16_t size)
+SNAP_WEAK uint32_t snap_calculateUserHash(const uint8_t *data, const uint16_t size)
 {
 	(void)data;
 	(void)size;
 	return 0;
 }
+
+#endif	// SNAP_OVERRIDE_USER_HASH
 
 /**
  * @}
