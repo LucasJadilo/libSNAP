@@ -36,7 +36,8 @@ sophisticated nodes can communicate with each other in the network.
 The homepage of the protocol is http://www.hth.com/snap/. Unfortunately, the
 website has been down for a long time. Hence, there is no official source online
 for the protocol. Fortunately, you can find a copy of the last revision of the
-[protocol specification](https://github.com/LucasJadilo/libSNAP/blob/main/doc/snap_v1.00_rev1.04.pdf) in this repository.
+[protocol specification](https://github.com/LucasJadilo/libSNAP/blob/main/doc/snap_v1.00_rev1.04.pdf)
+in this repository.
 
 ## Library features
 
@@ -46,12 +47,12 @@ resulting object file size when compiling the library for the following
 architectures: 8-bit AVR, 16-bit MSP430, 32-bit ARM Cortex-M0, and x86_64
 (Windows).
 
-| Compiler          | Version | Command line                                      | Object size (bytes) |
-|:-----------------:|:-------:|:-------------------------------------------------:|:-------------------:|
-| avr-gcc           | 7.3.0   | `avr-gcc -mmcu=atmega328p -c -O2 snap.c`          | 6.976               |
-| msp430-elf-gcc    | 9.3.1   | `msp430-elf-gcc -mmcu=msp430fr5969 -c -O2 snap.c` | 8.592               |
-| arm-none-eabi-gcc | 10.3.1  | `arm-none-eabi-gcc -mcpu=cortex-m0 -c -O2 snap.c` | 4.016               |
-| gcc (MinGW-W64)   | 12.2.0  | `gcc -c -O2 snap.c`                               | 6.358               |
+| Compiler          | Version | Command line                                                          | Object size (bytes) |
+|:-----------------:|:-------:|:---------------------------------------------------------------------:|:-------------------:|
+| avr-gcc           | 7.3.0   | `avr-gcc -DSNAP_DISABLE_WEAK -mmcu=atmega328p -O2 -c snap.c`          | 6.916               |
+| msp430-elf-gcc    | 9.3.1   | `msp430-elf-gcc -DSNAP_DISABLE_WEAK -mmcu=msp430fr5969 -O2 -c snap.c` | 8.456               |
+| arm-none-eabi-gcc | 10.3.1  | `arm-none-eabi-gcc -DSNAP_DISABLE_WEAK -mcpu=cortex-m0 -O2 -c snap.c` | 4.024               |
+| gcc (MinGW-W64)   | 12.2.0  | `gcc -DSNAP_DISABLE_WEAK -O2 -c snap.c`                               | 6.225               |
 
 This library supports most of the frame formats described in the protocol
 specification, including:
@@ -63,11 +64,8 @@ specification, including:
 32-bit CRC, and a user-defined hash function.
 
 Each CRC function can be individually configured at compilation time to maximize
-performance or minimize memory usage. If the macro `SNAP_CRC8_TABLE` is defined
-(by command line), the 8-bit CRC algorithm will use a lookup table to speed up
-the calculation, thus using more memory. The same logic applies to macros
-`SNAP_CRC16_TABLE` and `SNAP_CRC32_TABLE` regarding 16-bit CRC and 32-bit CRC
-algorithms, respectively.
+performance or minimize memory usage. Each CRC function can also be overridden
+by a user implementation, especially when a hardware implementation is available.
 
 There is no hardware-related code (e.g. serial port handling, etc). Frame
 transmission and reception through serial ports must be handled outside the
@@ -93,21 +91,32 @@ limitations:
 
 ## How to use
 
-The library consists of only a header file (`src/snap.h`) and a source file
-(`src/snap.c`). To use it in your projects, you must include the header file
-in the sources that will need it, and compile the library source file along with
-your other sources.
+The library consists of only a header file ([`src/snap.h`](https://github.com/LucasJadilo/libSNAP/blob/main/src/snap.h))
+and a source file ([`src/snap.c`](https://github.com/LucasJadilo/libSNAP/blob/main/src/snap.c)).
+To use it in your projects, you must include the header file in the sources that
+will need it, and compile the library source file along with your other sources.
 
-There are some code examples in the folder `src/examples/` that demonstrate
-the main features of the library:
-- Example 1: Frame encapsulation;
-- Example 2: Frame decoding and decapsulation;
-- Example 3: User-defined hash function (CRC-24/OPENPGP);
-- Example 4: Function-like macros.
+If the macro `SNAP_CRC8_TABLE` is defined (by command line), the 8-bit CRC
+algorithm will use a lookup table to speed up the calculation, thus using more
+memory. The same logic applies to macros `SNAP_CRC16_TABLE` and
+`SNAP_CRC32_TABLE` regarding 16-bit CRC and 32-bit CRC algorithms, respectively.
 
-Every function of the library was tested using the
-[Unity](https://github.com/ThrowTheSwitch/Unity) framework. You can find all the
-test cases in `test/test_snap.c`.
+All the hash function definitions have a `__attribute__((weak))` to make them
+overridable. If your compiler does not support this feature (e.g. "undefined
+reference" errors), you can disable it by defining the macro `SNAP_DISABLE_WEAK`.
+In this case, you can still override each function individually by defining the
+macros `SNAP_OVERRIDE_CRC8`, `SNAP_OVERRIDE_CRC16`, `SNAP_OVERRIDE_CRC32`, and
+`SNAP_OVERRIDE_USER_HASH`.
+
+There are some code examples in the folder [`src/examples/`](https://github.com/LucasJadilo/libSNAP/tree/main/src/examples)
+that demonstrate the main features of the library:
+- [Example 1](https://github.com/LucasJadilo/libSNAP/blob/main/src/examples/example1.c): Frame encapsulation;
+- [Example 2](https://github.com/LucasJadilo/libSNAP/blob/main/src/examples/example2.c): Frame decoding and decapsulation;
+- [Example 3](https://github.com/LucasJadilo/libSNAP/blob/main/src/examples/example3.c): User-defined hash function (CRC-24/OPENPGP);
+- [Example 4](https://github.com/LucasJadilo/libSNAP/blob/main/src/examples/example4.c): Function-like macros.
+
+Every function of the library was tested using the [Unity](https://github.com/ThrowTheSwitch/Unity)
+framework. You can find all the test cases in [`test/test_snap.c`](https://github.com/LucasJadilo/libSNAP/blob/main/test/test_snap.c).
 
 This project has only one `makefile`, which can be used to build and run all
 the examples and unit tests. It is necessary to have **GNU Make** and **GCC**
