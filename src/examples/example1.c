@@ -128,4 +128,15 @@ const char *statusToString(const snap_status_t status)
 	}
 }
 
+/**
+ * @brief Dummy function definition to avoid "undefined reference" error when
+ *        compiling with `-D SNAP_DISABLE_WEAK` and `-D SNAP_OVERRIDE_USER_HASH`.
+ */
+uint32_t snap_calculateUserHash(const uint8_t *data, const uint16_t size)
+{
+	(void)data;
+	(void)size;
+	return 0;
+}
+
 /******************************** END OF FILE *********************************/
