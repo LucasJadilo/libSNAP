@@ -47,12 +47,12 @@ resulting object file size when compiling the library for the following
 architectures: 8-bit AVR, 16-bit MSP430, 32-bit ARM Cortex-M0, and x86_64
 (Windows).
 
-| Compiler          | Version | Command line                                                          | Object size (bytes) |
-|:-----------------:|:-------:|:---------------------------------------------------------------------:|:-------------------:|
-| avr-gcc           | 7.3.0   | `avr-gcc -DSNAP_DISABLE_WEAK -mmcu=atmega328p -O2 -c snap.c`          | 6.916               |
-| msp430-elf-gcc    | 9.3.1   | `msp430-elf-gcc -DSNAP_DISABLE_WEAK -mmcu=msp430fr5969 -O2 -c snap.c` | 8.456               |
-| arm-none-eabi-gcc | 10.3.1  | `arm-none-eabi-gcc -DSNAP_DISABLE_WEAK -mcpu=cortex-m0 -O2 -c snap.c` | 4.024               |
-| gcc (MinGW-W64)   | 12.2.0  | `gcc -DSNAP_DISABLE_WEAK -O2 -c snap.c`                               | 6.225               |
+|     Compiler      | Version |                   Command line                    | Object size (bytes) |
+|:-----------------:|:-------:|:-------------------------------------------------:|:-------------------:|
+| avr-gcc           | 7.3.0   | `avr-gcc -mmcu=atmega328p -O2 -c snap.c`          | 6.720               |
+| msp430-elf-gcc    | 9.3.1   | `msp430-elf-gcc -mmcu=msp430fr5969 -O2 -c snap.c` | 8.112               |
+| arm-none-eabi-gcc | 10.3.1  | `arm-none-eabi-gcc -mcpu=cortex-m0 -O2 -c snap.c` | 3.892               |
+| gcc (MinGW-W64)   | 12.2.0  | `gcc -O2 -c snap.c`                               | 6.411               |
 
 This library supports most of the frame formats described in the protocol
 specification, including:
