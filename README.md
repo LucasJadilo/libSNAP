@@ -1,6 +1,6 @@
 # libSNAP
 
-**libSNAP** is an open source C/C++ library that implements most features of the
+**libSNAP** is an open source C/C++ library that implements the
 **Scaleable Node Address Protocol (SNAP)**.
 
 Official documentation: https://lucasjadilo.github.io/libSNAP_docs/
