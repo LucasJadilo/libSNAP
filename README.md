@@ -91,8 +91,8 @@ limitations:
 
 ## How to use
 
-The library consists of only a header file ([`src/snap.h`](https://github.com/LucasJadilo/libSNAP/blob/main/src/snap.h))
-and a source file ([`src/snap.c`](https://github.com/LucasJadilo/libSNAP/blob/main/src/snap.c)).
+The library consists of only a header file ([**src/snap.h**](https://github.com/LucasJadilo/libSNAP/blob/main/src/snap.h))
+and a source file ([**src/snap.c**](https://github.com/LucasJadilo/libSNAP/blob/main/src/snap.c)).
 To use it in your projects, you must include the header file in the sources that
 will need it, and compile the library source file along with your other sources.
 
@@ -108,22 +108,22 @@ In this case, you can still override each function individually by defining the
 macros `SNAP_OVERRIDE_CRC8`, `SNAP_OVERRIDE_CRC16`, `SNAP_OVERRIDE_CRC32`, and
 `SNAP_OVERRIDE_USER_HASH`.
 
-There are some code examples in the folder [`src/examples/`](https://github.com/LucasJadilo/libSNAP/tree/main/src/examples)
+There are some code examples in the folder [**src/examples/**](https://github.com/LucasJadilo/libSNAP/tree/main/src/examples)
 that demonstrate the main features of the library:
 - [Example 1](https://github.com/LucasJadilo/libSNAP/blob/main/src/examples/example1.c): Frame encapsulation;
 - [Example 2](https://github.com/LucasJadilo/libSNAP/blob/main/src/examples/example2.c): Frame decoding and decapsulation;
 - [Example 3](https://github.com/LucasJadilo/libSNAP/blob/main/src/examples/example3.c): User-defined hash function (CRC-24/OPENPGP);
 - [Example 4](https://github.com/LucasJadilo/libSNAP/blob/main/src/examples/example4.c): Function-like macros.
 
-Every function of the library was tested using the [Unity](https://github.com/ThrowTheSwitch/Unity)
-framework. You can find all the test cases in [`test/test_snap.c`](https://github.com/LucasJadilo/libSNAP/blob/main/test/test_snap.c).
+Every function of the library was tested using the [**Unity**](https://github.com/ThrowTheSwitch/Unity)
+framework. You can find all the test cases in [**test/test_snap.c**](https://github.com/LucasJadilo/libSNAP/blob/main/test/test_snap.c).
 
-This project has only one `makefile`, which can be used to build and run all
+This project has only one **makefile**, which can be used to build and run all
 the examples and unit tests. It is necessary to have **GNU Make** and **GCC**
-installed. Upon compilation, the folder `build/` will be created with all the
+installed. Upon compilation, the folder **build/** will be created with all the
 object files and executables. The available commands are listed below:
 - `make all`: Builds all the examples and unit tests;
-- `make clean`: Deletes the folder `build/` and everything in it;
+- `make clean`: Deletes the folder **build/** and everything in it;
 - `make test`: Builds and runs the unit tests;
 - `make exampleN`: Builds and runs the code example *N* (e.g. `make example1`
 runs the code example 1);
