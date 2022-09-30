@@ -37,7 +37,8 @@ int main(void)
 
 	snap_frame_t frame;
 
-	int ret = snap_init(&frame, data, sizeof(data));	// Using the same array for frame buffer and data to save memory (it must be large enough to store the complete frame)
+	// Using the same array for frame buffer and data to save memory (it must be large enough to store the complete frame)
+	int ret = snap_init(&frame, data, sizeof(data));
 
 	printf("\nsnap_init() = %d\n", ret);
 
